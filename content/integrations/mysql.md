@@ -112,9 +112,9 @@ If the status is not OK, see the FAQ section.
 
 # FAQ
 
-* [Why can't the Agent cannot authenticate to MySQL?](www.google.com)
+* [Why can't the Agent cannot authenticate to MySQL?](https://www.google.com)
 
-* [Why Database user lacks privileges ?](www.google.com)
+* [Why Database user lacks privileges ?](https://www.google.com)
 
 * [Can I get my PostgreSQL, MySQL and Maria DB metrics from Amazon RDS?](https://help.datadoghq.com/hc/en-us/articles/203037539)
 
