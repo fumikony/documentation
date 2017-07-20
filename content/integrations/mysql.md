@@ -82,9 +82,13 @@ instances:
 
 If you found above that MySQL doesn't have `performance_schema` enabled, do not set `extra_performance_metrics` to `true`.
 
+Restart the Agent to start sending MySQL metrics to Datadog.
+
+____
+
 See our [sample mysql.yaml](https://github.com/Datadog/integrations-core/blob/master/mysql/conf.yaml.example) for all available configuration options, including those for custom metrics.
 
-Restart the Agent to start sending MySQL metrics to Datadog.
+____
 
 ## Validation
 
@@ -104,44 +108,19 @@ Run the Agent's `info` subcommand and look for `mysql` under the Checks section:
     [...]
 ```
 
-If the status is not OK, see the Troubleshooting section.
+If the status is not OK, see the FAQ section.
 
 # FAQ
 
-You may observe one of these common problems in the output of the Datadog Agent's `info` subcommand.
+* [Why can't the Agent cannot authenticate to MySQL?](www.google.com)
 
-### Why can't the Agent cannot authenticate to MySQL?
-```
-    mysql
-    -----
-      - instance #0 [ERROR]: '(1045, u"Access denied for user \'datadog\'@\'localhost\' (using password: YES)")'
-      - Collected 0 metrics, 0 events & 1 service check
-```
+* [Why Database user lacks privileges ?](www.google.com)
 
-Either the `'datadog'@'localhost'` user doesn't exist or the Agent is not configured with correct credentials. Review the Configuration section to add a user, and review the Agent's `mysql.yaml`.
+* [Can I get my PostgreSQL, MySQL and Maria DB metrics from Amazon RDS?](https://help.datadoghq.com/hc/en-us/articles/203037539)
 
-### Database user lacks privileges
-```
-    mysql
-    -----
-      - instance #0 [WARNING]
-          Warning: Privilege error or engine unavailable accessing the INNODB status                          tables (must grant PROCESS): (1227, u'Access denied; you need (at least one of) the PROCESS privilege(s) for this operation')
-      - Collected 21 metrics, 0 events & 1 service check
-```
+* [Can I set up the dd-agent mysql check on my Google CloudSQL ?](https://help.datadoghq.com/hc/en-us/articles/115001875046)
 
-The Agent can authenticate, but it lacks privileges for one or more metrics it wants to collect. In this case, it lacks the PROCESS privilege:
-
-```
-mysql> select user,host,process_priv from mysql.user where user='datadog';
-+---------+-----------+--------------+
-| user    | host      | process_priv |
-+---------+-----------+--------------+
-| datadog | localhost | N            |
-+---------+-----------+--------------+
-1 row in set (0.00 sec)
-```
-
-Review the Configuration section and grant the datadog user all necessary privileges. Do NOT grant all privileges on all databases to this user.
+Find more FAQ about Mysql integration on our [Help center](https://help.datadoghq.com/hc/en-us/search?utf8=%E2%9C%93&query=mysql&commit=Search)
 
 # Further Reading
 
@@ -158,17 +137,29 @@ Review the Configuration section and grant the datadog user all necessary privil
 
 ## Service Checks
 
-**mysql.replication.slave_running**: Returns CRITICAL for a slave that's not running, otherwise OK.
+### mysql.replication.slave_running
 
-**mysql.can_connect**: Returns CRITICAL if the Agent cannot connect to MySQL to collect metrics, otherwise OK.
+|||
+|----------|--------|
+| OK | Default |
+| CRITICAL | a slave is not running |
+
+### mysql.can_connect
+
+|||
+|----------|--------|
+| OK | Default |
+| CRITICAL | The Agent cannot connect to MySQL to collect metrics |
 
 ## Metrics
 
-{{< get-metrics-from-git "mysql" >}}
+{{< get-metrics-from-git >}}
 
 The check does not collect all metrics by default. Set the following boolean configuration options to `true` to enable its metrics:
 
-|`extra_status_metrics`|
+`extra_status_metrics` adds the following metric:
+
+|||
 |----------|--------|
 | mysql.binlog.cache_disk_use | GAUGE |
 | mysql.binlog.cache_use | GAUGE |
@@ -204,7 +195,9 @@ The check does not collect all metrics by default. Set the following boolean con
 | mysql.performance.threads_cached | GAUGE |
 | mysql.performance.threads_created | MONOTONIC |
 
-|`extra_innodb_metrics`|
+`extra_innodb_metrics` adds the following metric:
+
+|||
 |----------|--------|
 | mysql.innodb.active_transactions | GAUGE |
 | mysql.innodb.buffer_pool_data | GAUGE |
@@ -292,11 +285,15 @@ The check does not collect all metrics by default. Set the following boolean con
 | mysql.innodb.x_lock_spin_rounds | RATE |
 | mysql.innodb.x_lock_spin_waits | RATE |
 
-|`extra_performance_metrics` adds the following metrics:|
+`extra_performance_metrics` adds the following metrics:
+
+|||
 |----------|--------|
 | mysql.performance.query_run_time.avg | GAUGE |
 | mysql.performance.digest_95th_percentile.avg_us | GAUGE |
 
-|`schema_size_metrics` adds the following metric:|
+`schema_size_metrics` adds the following metric:
+
+|||
 |----------|--------|
 | mysql.info.schema.size | GAUGE |
