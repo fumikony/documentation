@@ -23,7 +23,7 @@ Connect to Amazon Web Services (AWS) in order to:
 以下の内容を実現するために、Amazon Web Services (AWS)からデータを集取できるようにします:
 
 * AWS内で自動実行されている操作のステータスアップデートをイベントストリーム内に表示できるようにします。
-* Agentを入れ低な状態でも、EC2ホストからCloudWatchメトリクスを集取できるようにします。
+* Agentを入れていない状態でも、EC2ホストからCloudWatchメトリクスを集取できるようにします。
 * EC2ホストに対しEC2特有の情報をタグとして付与することができるようにします。("availability zone"など)
 * ELB, RDS, EBS, AutoScaling, DynamoDB, ElastiCache, CloudFront, CloudSearch, Kinesis, Lambda, OpsWorks, Redshift, Route53, SQS, SNSなどの、他のAWSサービスのCloudWatchメトリクスを収集できるようにします。
 * EC2のスケジュールメンテナンス作業の発生イベントをイベントストリーム内に表示できるようにします。
